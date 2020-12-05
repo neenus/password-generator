@@ -64,6 +64,11 @@ input[type=checkbox] {
   width: 40px;
 }
 
+#lengthText {
+  margin-left: -5px;
+  padding: 0;
+}
+
 .btn {
   border: none;
   color: #ffffff;

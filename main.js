@@ -8,6 +8,15 @@ const symbolEL = document.getElementById("symbol");
 const generateEL = document.getElementById("generate");
 const clipboardEL = document.getElementById("clipboard");
 const tooltipEL = document.getElementById("myTooltip");
+const lengthText = document.getElementById("lengthText");
+
+window.addEventListener("load", () => {
+  lengthText.innerText = lengthEL.value
+});
+
+lengthEL.addEventListener("input", () => {
+  lengthText.innerText = lengthEL.value
+})
 
 clipboardEL.addEventListener("click", () => {
   const textarea = document.createElement("textarea");
@@ -21,7 +30,7 @@ clipboardEL.addEventListener("click", () => {
   document.body.appendChild(textarea);
   textarea.select();
   document.execCommand("copy");
-  tooltipEL.innerHTML = "Password copied"
+  tooltipEL.innerHTML = "Copied to clipboard"
   textarea.remove();
 });
 
@@ -43,15 +52,23 @@ const generatePassword = (lower, upper, number, symbol, length) => {
     item => Object.values(item)[0]
   );
 
+  // console.log(typesArr);
+    
+
   if(typesCount === 0) {
     return "";
   }
 
-  for (let i = 0; i < length; i += 1) {
-    typesArr.forEach(type => {
-      const funcName = Object.keys(type)[0];
-      generatedPassword += randomFunc[funcName]();
-    });
+  for (let i = 0; i < length; i += typesCount) {
+    while (i < length) {
+      const funcName = Object.keys(typesArr[Math.floor(Math.random() * typesArr.length)]);
+      generatedPassword += randomFunc[funcName]()
+      i++
+    }
+    // typesArr.forEach(type => {  
+    //   const funcName = Object.keys(type)[0];
+    //   generatedPassword += randomFunc[funcName]();
+    // });
   }
 
   const finalPassword = generatedPassword.slice(0, length);
@@ -95,11 +112,4 @@ const randomFunc = {
   upper: getRandomUpper,
   number: getRandomeNumber,
   symbol: getRandomSymbol
-}
-
-let generatedPass = ""
-
-for (let i = 0; i < 20; i ++) {
-  const funcName = Object.keys(randomFunc)[Math.floor(Math.random() * 4)];
-  generatedPass += randomFunc.lower()
 }
